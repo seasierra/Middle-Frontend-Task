@@ -1,0 +1,1 @@
+ALTER TABLE `marks` ADD `name` text NOT NULL;

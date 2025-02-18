@@ -1,27 +1,47 @@
 'use client'
 
 import React from 'react'
-import { APIProvider, Map } from '@vis.gl/react-google-maps'
+import { Map, MapMouseEvent } from '@vis.gl/react-google-maps'
 import { MapMarker } from '@/components/MapMarker'
+import { useMarksList } from '@/api/marks'
 
 const center = {
   lat: 50.4504,
   lng: 30.5245,
 }
 
-const App = () => (
-  <APIProvider apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY ?? ''} id>
+const App = () => {
+  const { data: marksListData } = useMarksList()
+
+  const [newMarker, setNewMarker] = React.useState<google.maps.LatLngLiteral | null>(null)
+
+  const handleMapClick = ({ detail: { latLng } }: MapMouseEvent) => {
+    setNewMarker(latLng)
+  }
+
+  return (
     <Map
       style={{ width: '100vw', height: '100vh' }}
       mapId="f76dc5964efb5f0f"
       defaultCenter={center}
       defaultZoom={11}
+      zoomControl
+      clickableIcons={false}
       gestureHandling={'greedy'}
-      disableDefaultUI={true}
+      onClick={handleMapClick}
     >
-      <MapMarker position={{ lat: 50.4504, lng: 30.5245 }} />
+      {marksListData?.marks.map((mark, index) => (
+        <MapMarker
+          key={mark.id}
+          id={mark.id}
+          position={{ lat: mark.x, lng: mark.y }}
+          markName={mark.name}
+          comment={mark.comment}
+        />
+      ))}
+      {newMarker && <MapMarker create position={newMarker} onClose={() => setNewMarker(null)} />}
     </Map>
-  </APIProvider>
-)
+  )
+}
 
 export default App

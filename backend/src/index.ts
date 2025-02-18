@@ -1,6 +1,7 @@
 import { MarkSchema } from './schemas'
 import { zValidator } from '@hono/zod-validator'
 import { Hono } from 'hono'
+import { cors } from 'hono/cors'
 
 import { drizzle } from 'drizzle-orm/bun-sqlite'
 import { MarksTable } from './db/tables'
@@ -37,6 +38,11 @@ marks.delete('/:id', async (c) => {
 })
 
 const app = new Hono()
+
+app.use('/mark/*', cors())
 app.route('/mark', marks)
 
-export default app
+export default {
+  port: 3000,
+  fetch: app.fetch,
+}
