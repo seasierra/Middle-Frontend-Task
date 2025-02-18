@@ -5,8 +5,8 @@
 read -p "Enter Google Maps API Key: " GOOGLE_MAPS_API_KEY
 
 # Ask for API URL with a default value
-read -p "Enter API URL [default: http://localhost:3000/]: " API_URL
-API_URL=${API_URL:-http://localhost:3000/}
+read -p "Enter API URL [default: http://localhost:3000]: " API_URL
+API_URL=${API_URL:-http://localhost:3000}
 
 # Create .env file in ./frontend directory
 FRONTEND_ENV_FILE="./frontend/.env"
