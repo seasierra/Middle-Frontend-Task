@@ -1,6 +1,6 @@
 # deps
 node_modules/
-*db
+app.db
 *.log
 *.sqlite
 *.sqlite3
